@@ -464,16 +464,17 @@ const CH={}; Object.keys(GROUPS).forEach(k=>CH[k]=new Set());
 const TOG={instant:false, apex:false};
 const PRESETS={
   ours:   {label:'Like ours', title:'Funded EOD trailing drawdown AND the firm states NO funded consistency rule. Lucid Flex, Topstep XFA, Aqua Flex and Tradeify Select Flex pass this.',
-           set:{funddd:['eod_trailing'],fundcons:['none']}},
+           set:{funddd:['eod_trailing'],fundcons:['none']}, size:'50000'},
   ours50: {label:'Like ours, <= 50%', title:'Funded EOD trailing drawdown AND funded consistency none or at most 50%.',
-           set:{funddd:['eod_trailing'],fundcons:['none','<=50']}},
-  all:    {label:'Everything', title:'No rule chips selected (instant-funded and Apex still need their toggles).', set:{}},
+           set:{funddd:['eod_trailing'],fundcons:['none','<=50']}, size:'50000'},
+  all:    {label:'Everything', title:'No rule chips selected (instant-funded and Apex still need their toggles).', set:{}, size:'any'},
 };
 let PRESET='ours';
 
 function applyPreset(name){
   PRESET=name;
   Object.keys(GROUPS).forEach(k=>CH[k]=new Set((PRESETS[name].set[k])||[]));
+  if(PRESETS[name].size){const sz=$('#size'); if(sz){sz.value=[...sz.options].some(o=>o.value===PRESETS[name].size)?PRESETS[name].size:'any';}}  // owner 2026-11-06: 'Like ours' = our 50K seats
   syncChips(); render();
 }
 function syncChips(){
